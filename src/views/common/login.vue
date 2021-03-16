@@ -78,7 +78,8 @@
                 'captcha': this.dataForm.captcha
               })
             }).then(({data}) => {
-              if (data && data.code === 0) {
+              console.log(data)
+              if (data && data.code === 10000) {
                 this.$cookie.set('token', data.token)
                 this.$router.replace({ name: 'home' })
               } else {

@@ -14,7 +14,8 @@ module.exports = {
     // 代理列表, 是否开启代理通过[./dev.env.js]配置
     proxyTable: devEnv.OPEN_PROXY === false ? {} : {
       '/proxyApi': {
-        target: 'http://127.0.0.1:8090/rescue_home/',
+        //端口号为8080
+        target: 'http://127.0.0.1:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/proxyApi': '/'
