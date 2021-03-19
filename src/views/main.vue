@@ -69,8 +69,8 @@
         }).then(({data}) => {
           if (data && data.code === 10000) {
             this.loading = false
-            this.userId = data.user.userId
-            this.userName = data.user.username
+            this.userId = data.date.user.userId
+            this.userName = data.date.user.username
           }
         })
       }
