@@ -69,24 +69,6 @@ const mainRoutes = {
       meta: {
         title: '主题'
       }
-    },
-    {
-      path: '/demo-echarts',
-      component: _import('demo/echarts'),
-      name: 'demo-echarts',
-      meta: {
-        title: '模板-echarts',
-        isTab: true
-      }
-    },
-    {
-      path: '/demo-ueditor',
-      component: _import('demo/ueditor'),
-      name: 'demo-ueditor',
-      meta: {
-        title: '模板-ueditor',
-        isTab: true
-      }
     }
   ],
   beforeEnter (to, from, next) {

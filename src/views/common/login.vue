@@ -37,7 +37,8 @@
 
 <script>
   import { getUUID } from '@/utils'
-  export default {
+  import {setToken} from '../../utils/auth'
+export default {
     data () {
       return {
         dataForm: {
@@ -80,7 +81,7 @@
             }).then(({data}) => {
               console.log(data)
               if (data && data.code === 10000) {
-                this.$cookie.set('token', data.data.token)
+                setToken(data.data.token)
                 this.$router.replace({ name: 'home' })
               } else {
                 this.getCaptcha()
