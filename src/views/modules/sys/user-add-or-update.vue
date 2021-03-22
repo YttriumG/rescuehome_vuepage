@@ -8,33 +8,41 @@
       <el-form-item label="姓名" prop="missing_person_name">
         <el-input v-model="dataForm.missing_person_name" placeholder="姓名"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="missing_person_sex" :class="{ 'is-required': !dataForm.missing_id }">
+      <el-form-item label="性别" prop="missing_person_sex">
         <el-radio-group v-model="dataForm.missing_person_sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="0">女</el-radio>
+          <el-radio :label="true">男</el-radio>
+          <el-radio :label="false">女</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="年龄" prop="missing_person_age" :class="{ 'is-required': !dataForm.missing_id }">
-        <el-input v-model="dataForm.missing_person_age" type="password" placeholder="填入年龄或年龄段"></el-input>
+        <el-input v-model="dataForm.missing_person_age" placeholder="填入年龄或年龄段"></el-input>
       </el-form-item>
       <el-form-item label="身高" prop="missing_person_height">
         <el-input v-model="dataForm.missing_person_height" placeholder="大致身高"></el-input>
       </el-form-item>
       <el-form-item label="体型" prop="missing_person_shape">
-        <el-input v-model="dataForm.missing_person_shape" placeholder="手机号"></el-input>
+        <el-input v-model="dataForm.missing_person_shape" placeholder="体型"></el-input>
       </el-form-item>
-      <el-form-item label="角色" size="mini" prop="roleIdList">
-        <el-checkbox-group v-model="dataForm.roleIdList">
-          <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId">{{
-              role.roleName
-            }}
-          </el-checkbox>
-        </el-checkbox-group>
+      <el-form-item label="衣着" prop="missing_person_clothes">
+        <el-input v-model="dataForm.missing_person_clothes" placeholder="衣着"></el-input>
       </el-form-item>
-      <el-form-item label="状态" size="mini" prop="status">
-        <el-radio-group v-model="dataForm.status">
-          <el-radio :label="0">禁用</el-radio>
-          <el-radio :label="1">正常</el-radio>
+      <el-form-item label="面部特征" prop="missing_person_face">
+        <el-input v-model="dataForm.missing_person_face" placeholder="面部特征"></el-input>
+      </el-form-item>
+      <el-form-item label="既往病史" prop="missing_person_medical_history">
+        <el-input v-model="dataForm.missing_person_medical_history" placeholder="既往病史"></el-input>
+      </el-form-item>
+      <el-form-item label="失踪日期" prop="missing_date">
+        <el-date-picker v-model="dataForm.missing_date" type="datetime" placeholder="请选择日期时间"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="申报地点" prop="missing_place">
+        <el-input v-model="dataForm.missing_place" placeholder="申报地点"></el-input>
+      </el-form-item>
+      <el-form-item label="人员状态" prop="missing_state">
+        <el-radio-group v-model="dataForm.missing_state">
+          <el-radio :label="0">已找到</el-radio>
+          <el-radio :label="1">走失中</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -46,43 +54,55 @@
 </template>
 
 <script>
-import {isEmail, isMobile} from '@/utils/validate'
-import {updateMissingPeople} from "../../../api/missingPeople";
+import {getMissingPeopleById, updateMissingPeople} from "../../../api/missingPeople";
 
 export default {
   data() {
-    var validatePassword = (rule, value, callback) => {
-      if (!this.dataForm.id && !/\S/.test(value)) {
-        callback(new Error('密码不能为空'))
-      } else {
-        callback()
-      }
-    }
-    var validateComfirmPassword = (rule, value, callback) => {
-      if (!this.dataForm.id && !/\S/.test(value)) {
-        callback(new Error('确认密码不能为空'))
-      } else if (this.dataForm.password !== value) {
-        callback(new Error('确认密码与密码输入不一致'))
-      } else {
-        callback()
-      }
-    }
-    var validateEmail = (rule, value, callback) => {
-      if (!isEmail(value)) {
-        callback(new Error('邮箱格式错误'))
-      } else {
-        callback()
-      }
-    }
-    var validateMobile = (rule, value, callback) => {
-      if (!isMobile(value)) {
-        callback(new Error('手机号格式错误'))
-      } else {
-        callback()
-      }
-    }
+    // var validateAge = (rule, value, callback) => {
+    //   if (!this.dataForm.missing_id && !/\S/.test(value)) {
+    //     callback(new Error('年龄信息不能为空'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // var validateComfirmPassword = (rule, value, callback) => {
+    //   if (!this.dataForm.missing_id && !/\S/.test(value)) {
+    //     callback(new Error('确认密码不能为空'))
+    //   } else if (this.dataForm.password !== value) {
+    //     callback(new Error('确认密码与密码输入不一致'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // var validateEmail = (rule, value, callback) => {
+    //   if (!isEmail(value)) {
+    //     callback(new Error('邮箱格式错误'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // var validateMobile = (rule, value, callback) => {
+    //   if (!isMobile(value)) {
+    //     callback(new Error('手机号格式错误'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       visible: false,
+      options: [{
+        value: '1',
+        label: '一级走失状态（失踪24小时内）'
+      }, {
+        value: '2',
+        label: '二级走失状态（失踪48小时内）'
+      }, {
+        value: '3',
+        label: '三级走失状态（失踪72小时内）'
+      }, {
+        value: '4',
+        label: '四级走失状态（超过72小时）'
+      }],
       roleList: [],
       dataForm: {
         missing_id: 0,
@@ -104,51 +124,58 @@ export default {
         missing_person_name: [
           {required: true, message: '姓名不能为空', trigger: 'blur'}
         ],
-        missing_person_sex: [
-          {validator: validatePassword, trigger: 'blur'}
+        missing_person_age: [
+          {required: true, message: '年龄信息不能为空', trigger: 'blur'}
         ],
-        comfirmPassword: [
-          {validator: validateComfirmPassword, trigger: 'blur'}
+        missing_person_height: [
+          {required: true, message: '身高信息不能为空', trigger: 'blur'}
         ],
-        email: [
-          {required: true, message: '邮箱不能为空', trigger: 'blur'},
-          {validator: validateEmail, trigger: 'blur'}
+        missing_date: [
+          {required: true, message: '失踪时间不能为空', trigger: 'blur'}
         ],
-        mobile: [
-          {required: true, message: '手机号不能为空', trigger: 'blur'},
-          {validator: validateMobile, trigger: 'blur'}
+        missing_place: [
+          {required: true, message: '申报地点不能为空', trigger: 'blur'}
+        ],
+        missing_level: [
+          {required: true, message: '戒备等级不能为空', trigger: 'blur'}
         ]
       }
     }
   },
   methods: {
     init(id) {
-      this.dataForm.id = id || 0
+      this.dataForm.missing_id = id || 0
       this.$http({
         url: this.$http.adornUrl('/sys/role/select'),
         method: 'get',
         params: this.$http.adornParams()
       }).then(({data}) => {
-        this.roleList = data && data.code === 0 ? data.list : []
+        this.roleList = data && data.code === 10000 ? data.list : []
       }).then(() => {
         this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
         })
       }).then(() => {
-        if (this.dataForm.id) {
-          this.$http({
-            url: this.$http.adornUrl(`/sys/user/info/${this.dataForm.id}`),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataForm.userName = data.user.username
-              this.dataForm.salt = data.user.salt
-              this.dataForm.email = data.user.email
-              this.dataForm.mobile = data.user.mobile
-              this.dataForm.roleIdList = data.user.roleIdList
-              this.dataForm.status = data.user.status
+        if (this.dataForm.missing_id) {
+          getMissingPeopleById(this.dataForm.missing_id).then(({data}) => {
+            if (data && data.code === 10000) {
+              var person = data.data
+              this.dataForm.missing_person_name = person.missing_person_name
+              this.dataForm.missing_person_sex = person.missing_person_sex
+              this.dataForm.missing_person_age = person.missing_person_age
+              this.dataForm.missing_person_height = person.missing_person_height
+              this.dataForm.missing_person_shape = person.missing_person_shape
+              this.dataForm.missing_person_clothes = person.missing_person_clothes
+              this.dataForm.missing_person_face = person.missing_person_face
+              this.dataForm.missing_person_medical_history = person.missing_person_medical_history
+              this.dataForm.missing_date = person.missing_date
+              this.dataForm.missing_place = person.missing_place
+              this.dataForm.missing_whereabouts = person.missing_whereabouts
+              this.dataForm.missing_level = person.missing_level
+              this.dataForm.missing_state = person.missing_state
+            }else{
+              this.$message.error(data.msg)
             }
           })
         }
@@ -159,7 +186,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateMissingPeople(this.dataForm).then(({data}) => {
-            if (data && data.code === 0) {
+            console.log(data)
+            if (data && data.code === 10000) {
               this.$message({
                 message: '操作成功',
                 type: 'success',

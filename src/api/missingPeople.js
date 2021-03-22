@@ -17,41 +17,42 @@ export function updateMissingPeople(dataForm) {
   return request({
     url: `/proxyApi/missing-people/update`,
     method: 'post',
-    data: this.$http.adornData({
-      'missing_id': this.dataForm.missing_id,
-      'missing_person_name': this.dataForm.missing_person_name,
-      'missing_person_sex': this.dataForm.missing_person_sex,
-      'missing_person_age': this.dataForm.missing_person_age,
-      'missing_person_height': this.dataForm.missing_person_height,
-      'missing_person_shape': this.dataForm.missing_person_shape,
-      'missing_person_clothes': this.dataForm.missing_person_clothes,
-      'missing_person_face': this.dataForm.missing_person_face,
-      'missing_person_medical_history': this.dataForm.missing_person_medical_history,
-      'missing_date': this.dataForm.missing_date,
-      'missing_place': this.dataForm.missing_place,
-      'missing_whereabouts': this.dataForm.missing_whereabouts,
-      'missing_level': this.dataForm.missing_level,
-      'missing_state': this.mdataForm.issing_state
-    })
-  })
-}
-
-
-export function getMissingPeopleByName(name) {
-  return request({
-    url: '/proxyApi/missing-people/name',
-    method: 'get',
-    params: name
+    data: {
+      'missing_id': dataForm.missing_id,
+      'missing_person_name': dataForm.missing_person_name,
+      'missing_person_sex': dataForm.missing_person_sex,
+      'missing_person_age': dataForm.missing_person_age,
+      'missing_person_height': dataForm.missing_person_height,
+      'missing_person_shape': dataForm.missing_person_shape,
+      'missing_person_clothes': dataForm.missing_person_clothes,
+      'missing_person_face': dataForm.missing_person_face,
+      'missing_person_medical_history': dataForm.missing_person_medical_history,
+      'missing_date': dataForm.missing_date,
+      'missing_place': dataForm.missing_place,
+      'missing_whereabouts': dataForm.missing_whereabouts,
+      'missing_level': dataForm.missing_level,
+      'missing_state': dataForm.missing_state
+    }
   })
 }
 
 export function getMissingPeopleById(id) {
   return request({
-    url: '/proxyApi/missing-people/id',
+    url: `/proxyApi/missing-people/id/${id}`,
     method: 'get',
-    params: {id}
+    params: ''
   })
 }
+
+
+export function deleteMissingPeople(id) {
+  return request({
+    url: `/proxyApi/missing-people/delete/${id}`,
+    method: 'delete',
+    params: ''
+  })
+}
+
 
 export function addMissingPeople(data) {
   return request({
@@ -61,11 +62,3 @@ export function addMissingPeople(data) {
   })
 }
 
-
-export function deleteMissingPeople(id) {
-  return request({
-    url: '/proxyApi/missing-people/delete',
-    method: 'post',
-    params: 'id'
-  })
-}
