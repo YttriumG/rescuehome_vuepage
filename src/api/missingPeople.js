@@ -1,5 +1,4 @@
 import request from '../utils/httpRequest'
-import th from "element-ui/src/locale/lang/th";
 
 export function getMissingPeopleList(pageIndex, pageSize, name) {
   return request({

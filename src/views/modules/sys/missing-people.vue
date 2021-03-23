@@ -1,8 +1,8 @@
 <template>
-  <div class="mod-user">
+  <div class="mod-missing-people">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.name" placeholder="用户名" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="走失人员姓名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -154,7 +154,6 @@ export default {
         var days = Math.floor(timeDifference / (24 * 3600 * 1000));//计算出相差天数
         var leave1 = timeDifference % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
         var hours = Math.floor(leave1 / (3600 * 1000)) + days * 24; //计算出小时数
-        console.log(hours)
         return hours
       }
     },
@@ -163,7 +162,6 @@ export default {
       this.dataListLoading = true
       getMissingPeopleList(this.pageIndex, this.pageSize, this.dataForm.name)
         .then(({data}) => {
-          console.log(data)
           if (data && data.code === 10000) {
             this.dataList = data.data.list
             this.totalPage = data.data.totalCount

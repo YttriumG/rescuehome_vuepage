@@ -106,7 +106,6 @@ router.beforeEach((to, from, next) => {
     }).then(({
       data
     }) => {
-      console.log(data)
       if (data && data.code === 10000) {
         fnAddDynamicMenuRoutes(data.data.menuList)
         router.options.isAddDynamicMenuRoutes = true

@@ -2,7 +2,7 @@
   <div class="mod-role">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="家属姓名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -23,30 +23,48 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="roleId"
+        prop="familyId"
         header-align="center"
         align="center"
         width="80"
         label="ID">
       </el-table-column>
       <el-table-column
-        prop="roleName"
+        prop="familyName"
         header-align="center"
         align="center"
-        label="角色名称">
+        label="家属姓名">
       </el-table-column>
       <el-table-column
-        prop="remark"
+        prop="familySex"
         header-align="center"
         align="center"
-        label="备注">
+        label="性别">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.familySex" size="small">男</el-tag>
+          <el-tag v-else size="small">女</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="missingId"
         header-align="center"
         align="center"
         width="180"
-        label="创建时间">
+        label="寻找对象">
+      </el-table-column>
+      <el-table-column
+        prop="familyPhone"
+        header-align="center"
+        align="center"
+        width="180"
+        label="联系电话">
+      </el-table-column>
+      <el-table-column
+        prop="familyPlace"
+        header-align="center"
+        align="center"
+        width="180"
+        label="家庭住址">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -76,11 +94,12 @@
 
 <script>
   import AddOrUpdate from './role-add-or-update'
+  import {getFamilyList} from "../../../api/family";
   export default {
     data () {
       return {
         dataForm: {
-          roleName: ''
+          name: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -98,21 +117,16 @@
       this.getDataList()
     },
     methods: {
+      getMissingPeopleName(id){
+
+      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl('/sys/role/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'roleName': this.dataForm.roleName
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
+        getFamilyList(this.pageIndex, this.pageSize, this.dataForm.name).then(({data}) => {
+          if (data && data.code === 10000) {
+            this.dataList = data.data.list
+            this.totalPage = data.data.totalCount
           } else {
             this.dataList = []
             this.totalPage = 0
