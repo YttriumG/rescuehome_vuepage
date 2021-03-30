@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button type="danger" @click="deleteHandle()"
+        <el-button v-if="isAuth('sys:ms:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('sys:ms:delete')" type="danger" @click="deleteHandle()"
                    :disabled="dataListSelections.length <= 0">批量删除
         </el-button>
       </el-form-item>
@@ -28,6 +28,7 @@
         prop="missing_id"
         header-align="center"
         align="center"
+        width="60"
         label="ID">
       </el-table-column>
       <el-table-column
@@ -56,6 +57,7 @@
         prop="missing_date"
         header-align="center"
         align="center"
+        width="150"
         label="失踪日期">
       </el-table-column>
       <el-table-column
@@ -88,15 +90,16 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small"
+                     @click="moreInfo(scope.row.missing_id)">
+            详情
+          </el-button>
+          <el-button type="text" size="small"
                      @click="addOrUpdateHandle(scope.row.missing_id)">修改
           </el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.missing_id)">
             删除
           </el-button>
-          <el-button type="text" size="small"
-                     @click="moreInfo(scope.row.missing_id)">
-            详情
-          </el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -116,8 +119,8 @@
 </template>
 
 <script>
-import AddOrUpdate from './user-add-or-update'
-import MoreInfo from './user-info'
+import AddOrUpdate from './missingpeople-add-or-update'
+import MoreInfo from './missingpeople-info'
 import {deleteMissingPeople, getMissingPeopleList} from "../../../api/missingPeople";
 
 export default {
@@ -165,6 +168,7 @@ export default {
           if (data && data.code === 10000) {
             this.dataList = data.data.list
             this.totalPage = data.data.totalCount
+
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -210,7 +214,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteMissingPeople(id).then(({data}) => {
+        console.log(userIds)
+        deleteMissingPeople(userIds).then(({data}) => {
           if (data && data.code === 10000) {
             this.$message({
               message: '操作成功',

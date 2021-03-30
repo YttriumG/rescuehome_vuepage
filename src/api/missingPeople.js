@@ -12,6 +12,17 @@ export function getMissingPeopleList(pageIndex, pageSize, name) {
   })
 }
 
+export function getMissingPeopleApproval(pageIndex, pageSize) {
+  return request({
+    url: `/proxyApi/missing-people/approval`,
+    method: 'get',
+    params: {
+      'page': pageIndex,
+      'limit': pageSize
+    }
+  })
+}
+
 export function updateMissingPeople(dataForm) {
   return request({
     url: `/proxyApi/missing-people/update`,
@@ -39,7 +50,7 @@ export function getMissingPeopleById(id) {
   return request({
     url: `/proxyApi/missing-people/id/${id}`,
     method: 'get',
-    params: ''
+    params: '',
   })
 }
 

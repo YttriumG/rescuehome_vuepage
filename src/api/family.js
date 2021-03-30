@@ -11,3 +11,34 @@ export function getFamilyList( pageIndex, pageSize, name ){
     }
   })
 }
+
+export function getFamilyById(id){
+  return request({
+    url: `/proxyApi/family/id/${id}`,
+    method: 'get',
+    params: '',
+  })
+}
+
+export function updateFamily(dataForm){
+  return request({
+    url: `/proxyApi/family/update`,
+    method:'post',
+    data:{
+      'familyId' : dataForm.familyId,
+      'familyName' : dataForm.familyName,
+      'familyPhone' : dataForm.familyPhone,
+      'familyPlace' : dataForm.familyPlace,
+      'familySex' : dataForm.familySex,
+      'missingId' : dataForm.missingId
+    }
+  })
+}
+
+export function deleteFamilyById(id){
+  return request({
+    url: `/proxyApi/family/delete/${id}`,
+    method: 'delete',
+    params: '',
+  })
+}

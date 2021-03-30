@@ -82,12 +82,13 @@ export default {
     init(id) {
       this.dataForm.missing_id = id
       getMissingPeopleById(id).then(({data}) => {
-        this.visible = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+          if (this.$refs.dataForm !== undefined) {
+            this.$refs.dataForm.resetFields()
+          }
           if (data && data.code === 10000) {
-            console.log(data)
-            var person = data.data
+            this.visible = true
+            const person = data.data;
             this.dataForm.missing_person_name = person.missing_person_name
             this.dataForm.missing_person_sex = person.missing_person_sex
             this.dataForm.missing_person_age = person.missing_person_age
