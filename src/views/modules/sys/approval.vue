@@ -11,55 +11,55 @@
       v-loading="dataListLoading"
       style="width: 100%;">
       <el-table-column
-        prop="missing_id"
+        prop="missingId"
         header-align="center"
         align="center"
         width="60"
         label="ID">
       </el-table-column>
       <el-table-column
-        prop="missing_person_name"
+        prop="missingPersonName"
         header-align="center"
         align="center"
         label="姓名">
       </el-table-column>
       <el-table-column
-        prop="missing_person_sex"
+        prop="missingPersonSex"
         header-align="center"
         align="center"
         label="性别">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.missing_person_sex" size="small">男</el-tag>
+          <el-tag v-if="scope.row.missingPersonSex" size="small">男</el-tag>
           <el-tag v-else size="small">女</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        prop="missing_person_age"
+        prop="missingPersonAge"
         header-align="center"
         align="center"
         label="年龄">
       </el-table-column>
       <el-table-column
-        prop="missing_date"
+        prop="missingDate"
         header-align="center"
         align="center"
         width="150"
         label="失踪日期">
       </el-table-column>
       <el-table-column
-        prop="missing_level"
+        prop="missingLevel"
         header-align="center"
         align="center"
         label="戒备等级">
         <template slot-scope="scope">
-          <el-tag v-if="timeQuantum(scope.row.missing_date) <= 24" size="small" type="danger">一级</el-tag>
-          <el-tag v-else-if="timeQuantum(scope.row.missing_date) <= 48" size="small" type="warning">二级</el-tag>
-          <el-tag v-else-if="timeQuantum(scope.row.missing_date) <= 72" size="small" type="warning">三级</el-tag>
+          <el-tag v-if="timeQuantum(scope.row.missingDate) <= 24" size="small" type="danger">一级</el-tag>
+          <el-tag v-else-if="timeQuantum(scope.row.missingDate) <= 48" size="small" type="warning">二级</el-tag>
+          <el-tag v-else-if="timeQuantum(scope.row.missingDate) <= 72" size="small" type="warning">三级</el-tag>
           <el-tag v-else size="small" type="info">四级</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        prop="missing_state"
+        prop="missingState"
         header-align="center"
         align="center"
         label="当前状态">
@@ -75,7 +75,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" plain size="small"
-                     @click="info(scope.row.missing_id)">
+                     @click="info(scope.row.missingId)">
             审批
           </el-button>
 

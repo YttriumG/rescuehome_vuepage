@@ -28,20 +28,22 @@ export function updateMissingPeople(dataForm) {
     url: `/proxyApi/missing-people/update`,
     method: 'post',
     data: {
-      'missing_id': dataForm.missing_id,
-      'missing_person_name': dataForm.missing_person_name,
-      'missing_person_sex': dataForm.missing_person_sex,
-      'missing_person_age': dataForm.missing_person_age,
-      'missing_person_height': dataForm.missing_person_height,
-      'missing_person_shape': dataForm.missing_person_shape,
-      'missing_person_clothes': dataForm.missing_person_clothes,
-      'missing_person_face': dataForm.missing_person_face,
-      'missing_person_medical_history': dataForm.missing_person_medical_history,
-      'missing_date': dataForm.missing_date,
-      'missing_place': dataForm.missing_place,
-      'missing_whereabouts': dataForm.missing_whereabouts,
-      'missing_level': dataForm.missing_level,
-      'missing_state': dataForm.missing_state
+      'missingId': dataForm.missingId,
+      'familyId':dataForm.familyId,
+      'missingPersonName': dataForm.missingPersonName,
+      'missingPersonSex': dataForm.missingPersonSex,
+      'missingPersonAge': dataForm.missingPersonAge,
+      'missingPersonHeight': dataForm.missingPersonHeight,
+      'missingPersonShape': dataForm.missingPersonShape,
+      'missingPersonClothes': dataForm.missingPersonClothes,
+      'missingPersonFace': dataForm.missingPersonFace,
+      'missingPersonMedicalHistory': dataForm.missingPersonMedicalHistory,
+      'missingDate': dataForm.missingDate,
+      'missingPlaceLongitude':dataForm.missingPlaceLongitude,
+      'missingPlaceLatitude':dataForm.missingPlaceLatitude,
+      'missingWhereabouts': dataForm.missingWhereabouts,
+      'missingLevel': dataForm.missingLevel,
+      'missingState': dataForm.missingState
     }
   })
 }
@@ -64,11 +66,26 @@ export function deleteMissingPeople(id) {
 }
 
 
-export function addMissingPeople(data) {
+export function addMissingPeople(dataForm) {
   return request({
     url: '/proxyApi/missing-people/create',
     method: 'post',
-    data
+    data:{
+      'familyId':dataForm.familyId,
+      'missingPersonName': dataForm.missingPersonName,
+      'missingPersonSex': dataForm.missingPersonSex,
+      'missingPersonAge': dataForm.missingPersonAge,
+      'missingPersonHeight': dataForm.missingPersonHeight,
+      'missingPersonShape': dataForm.missingPersonShape,
+      'missingPersonClothes': dataForm.missingPersonClothes,
+      'missingPersonFace': dataForm.missingPersonFace,
+      'missingPersonMedicalHistory': dataForm.missingPersonMedicalHistory,
+      'missingPlaceLongitude':dataForm.missingPlaceLongitude,
+      'missingPlaceLatitude':dataForm.missingPlaceLatitude,
+      'missingWhereabouts': dataForm.missingWhereabouts,
+      'missingState': 1,
+      'missingLevel': dataForm.missingLevel
+    }
   })
 }
 

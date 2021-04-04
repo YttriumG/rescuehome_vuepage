@@ -1,18 +1,24 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    title= '修改'
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
              label-width="80px">
-      <el-form-item label="参数名" prop="paramKey">
-        <el-input v-model="dataForm.paramKey" placeholder="参数名"></el-input>
+      <el-form-item label="OpenId" prop="openId">
+        <div>{{dataForm.openId}}</div>
       </el-form-item>
-      <el-form-item label="参数值" prop="paramValue">
-        <el-input v-model="dataForm.paramValue" placeholder="参数值"></el-input>
+      <el-form-item label="SessionKey" prop="sessionKey">
+        <div>{{dataForm.sessionKey}}</div>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+      <el-form-item label="用户类型" prop="userType">
+        <el-radio-group v-model="dataForm.userType">
+          <el-radio :label="1">家属</el-radio>
+          <el-radio :label="2">志愿者</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="用户ID" prop="userId">
+        <el-input v-model="dataForm.userId" placeholder="用户Id"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -23,24 +29,21 @@
 </template>
 
 <script>
+import {getUserInfo} from "../../../api/user-info";
+
 export default {
   name: 'user-add-or-update',
   data() {
     return {
       visible: false,
       dataForm: {
-        id: 0,
-        paramKey: '',
-        paramValue: '',
-        remark: ''
+        openId:'',
+        sessionKey:'',
+        userType:'',
+        userId:''
       },
       dataRule: {
-        paramKey: [
-          {required: true, message: '参数名不能为空', trigger: 'blur'}
-        ],
-        paramValue: [
-          {required: true, message: '参数值不能为空', trigger: 'blur'}
-        ]
+
       }
     }
   },
@@ -51,15 +54,13 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
         if (this.dataForm.id) {
-          this.$http({
-            url: this.$http.adornUrl(`/sys/config/info/${this.dataForm.id}`),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataForm.paramKey = data.config.paramKey
-              this.dataForm.paramValue = data.config.paramValue
-              this.dataForm.remark = data.config.remark
+          getUserInfo(this.dataForm.id).then(({data}) => {
+            console.log(data)
+            if (data && data.code === 10000) {
+              this.dataForm.openId = data.data.openId
+              this.dataForm.sessionKey = data.data.sessionKey
+              this.dataForm.userType = data.data.userType
+              this.dataForm.userId = data.data.userId
             }
           })
         }

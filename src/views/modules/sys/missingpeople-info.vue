@@ -4,48 +4,52 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <div slot="title" class="el-header">
-      <span class="title"> {{ dataForm.missing_person_name }}的详细资料   </span>
-      <el-tag v-if="timeQuantum(dataForm.missing_date) <= 24" size="small" type="danger">一级走失状态</el-tag>
-      <el-tag v-else-if="timeQuantum(dataForm.missing_date) <= 48" size="small" type="warning">二级走失状态</el-tag>
-      <el-tag v-else-if="timeQuantum(dataForm.missing_date) <= 72" size="small" type="warning">三级走失状态</el-tag>
+      <span class="title"> {{ dataForm.missingPersonName }}的详细资料   </span>
+      <el-tag v-if="timeQuantum(dataForm.missingDate) <= 24" size="small" type="danger">一级走失状态</el-tag>
+      <el-tag v-else-if="timeQuantum(dataForm.missingDate) <= 48" size="small" type="warning">二级走失状态</el-tag>
+      <el-tag v-else-if="timeQuantum(dataForm.missingDate) <= 72" size="small" type="warning">三级走失状态</el-tag>
       <el-tag v-else size="small" type="info">四级走失状态</el-tag>
     </div>
     <el-form v-model="dataForm" ref="dataForm" label-width="150px">
       <el-form-item label="姓名" prop="missing_person_name">
-        <div>{{ dataForm.missing_person_name }}</div>
+        <div>{{ dataForm.missingPersonName }}</div>
       </el-form-item>
-      <el-form-item label="性别" prop="missing_person_sex">
+      <el-form-item label="性别" prop="missingPersonSex">
         <template slot-scope="scope">
-          <div v-if="dataForm.missing_person_sex">男</div>
+          <div v-if="dataForm.missingPersonSex">男</div>
           <div v-else size="small">女</div>
         </template>
       </el-form-item>
-      <el-form-item label="年龄" prop="missing_person_age">
-        <div>{{ dataForm.missing_person_age }}</div>
+      <el-form-item label="年龄" prop="missingPersonAge">
+        <div>{{ dataForm.missingPersonAge }}</div>
       </el-form-item>
       <el-form-item label="身高" prop="missing_person_height">
-        <div>{{ dataForm.missing_person_height }}</div>
+        <div>{{ dataForm.missingPersonHeight }}</div>
       </el-form-item>
-      <el-form-item label="体型" prop="missing_person_shape">
-        <div>{{ dataForm.missing_person_shape }}</div>
+      <el-form-item label="体型" prop="missingPersonShape">
+        <div>{{ dataForm.missingPersonShape }}</div>
       </el-form-item>
-      <el-form-item label="衣着" prop="missing_person_clothes">
-        <div>{{ dataForm.missing_person_clothes }}</div>
+      <el-form-item label="衣着" prop="missingPersonClothes">
+        <div>{{ dataForm.missingPersonClothes }}</div>
       </el-form-item>
-      <el-form-item label="面部特征" prop="missing_person_face">
-        <div>{{ dataForm.missing_person_face }}</div>
+      <el-form-item label="面部特征" prop="missingPersonFace">
+        <div>{{ dataForm.missingPersonFace }}</div>
       </el-form-item>
-      <el-form-item label="既往病史" prop="missing_person_medical_history">
-        <div>{{ dataForm.missing_person_medical_history }}</div>
+      <el-form-item label="既往病史" prop="missingPersonMedicalHistory">
+        <div>{{ dataForm.missingPersonMedicalHistory }}</div>
       </el-form-item>
-      <el-form-item label="失踪日期" prop="missing_date">
-        <div>{{ dataForm.missing_date }}</div>
+      <el-form-item label="失踪日期" prop="missingDate">
+        <div>{{ dataForm.missingDate }}</div>
       </el-form-item>
       <el-form-item label="申报地点" prop="missing_place">
-        <div>{{ dataForm.missing_place }}</div>
+        <div>{{ dataForm.missingPlaceLongitude }}</div>
+        <div>{{dataForm.missingPlaceLatitude}}</div>
       </el-form-item>
-      <el-form-item label="人员状态" prop="missing_state">
-        <el-tag v-if="dataForm.missing_state === 1" type="danger" size="small">走失中</el-tag>
+      <el-form-item label="走失范围" prop="missingWhereabouts">
+        <div>{{dataForm.missingWhereabouts}}</div>
+      </el-form-item>
+      <el-form-item label="人员状态" prop="missingState">
+        <el-tag v-if="dataForm.missingState === 1" type="danger" size="small">走失中</el-tag>
         <el-tag v-else size="small" type="success">已找到</el-tag>
       </el-form-item>
     </el-form>
@@ -61,20 +65,22 @@ export default {
     return {
       visible: false,
       dataForm: {
-        missing_id: 0,
-        missing_person_name: '',
-        missing_person_sex: '',
-        missing_person_age: '',
-        missing_person_height: '',
-        missing_person_shape: '',
-        missing_person_clothes: '',
-        missing_person_face: '',
-        missing_person_medical_history: '',
-        missing_date: '',
-        missing_place: '',
-        missing_whereabouts: '',
-        missing_level: '',
-        missing_state: 0
+          missingId: 0,
+          familyId: 0,
+          missingPersonName: '',
+          missingPersonSex: '',
+          missingPersonAge: '',
+          missingPersonHeight: '',
+          missingPersonShape: '',
+          missingPersonClothes: '',
+          missingPersonFace: '',
+          missingPersonMedicalHistory: '',
+          missingDate: '',
+          missingPlaceLongitude: '',
+          missingPlaceLatitude: '',
+          missingWhereabouts: '',
+          missingLevel: '',
+          missingState: 0
       }
     }
   },
@@ -88,20 +94,21 @@ export default {
           }
           if (data && data.code === 10000) {
             this.visible = true
-            const person = data.data;
-            this.dataForm.missing_person_name = person.missing_person_name
-            this.dataForm.missing_person_sex = person.missing_person_sex
-            this.dataForm.missing_person_age = person.missing_person_age
-            this.dataForm.missing_person_height = person.missing_person_height
-            this.dataForm.missing_person_shape = person.missing_person_shape
-            this.dataForm.missing_person_clothes = person.missing_person_clothes
-            this.dataForm.missing_person_face = person.missing_person_face
-            this.dataForm.missing_person_medical_history = person.missing_person_medical_history
-            this.dataForm.missing_date = person.missing_date
-            this.dataForm.missing_place = person.missing_place
-            this.dataForm.missing_whereabouts = person.missing_whereabouts
-            this.dataForm.missing_level = person.missing_level
-            this.dataForm.missing_state = person.missing_state
+            const person = data.data.missingPeople;
+            this.dataForm.missingPersonName = person.missingPersonName
+            this.dataForm.missingPersonSex = person.missingPersonSex
+            this.dataForm.missingPersonAge = person.missingPersonAge
+            this.dataForm.missingPersonHeight = person.missingPersonHeight
+            this.dataForm.missingPersonShape = person.missingPersonShape
+            this.dataForm.missingPersonClothes = person.missingPersonClothes
+            this.dataForm.missingPersonFace = person.missingPersonFace
+            this.dataForm.missingPersonMedicalHistory = person.missingPersonMedicalHistory
+            this.dataForm.missingDate = person.missingDate
+            this.dataForm.missingPlaceLongitude = person.missingPlaceLongitude
+            this.dataForm.missingPlaceLatitude = person.missingPlaceLatitude
+            this.dataForm.missingWhereabouts = person.missingWhereabouts
+            this.dataForm.missingLevel = person.missingLevel
+            this.dataForm.missingState = person.missingState
           } else {
             this.$message.error(data.msg)
           }
@@ -118,7 +125,6 @@ export default {
         var days = Math.floor(timeDifference / (24 * 3600 * 1000));//计算出相差天数
         var leave1 = timeDifference % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
         var hours = Math.floor(leave1 / (3600 * 1000)) + days * 24; //计算出小时数
-        console.log(hours)
         return hours
       }
     }

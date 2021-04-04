@@ -15,7 +15,7 @@ module.exports = {
     proxyTable: devEnv.OPEN_PROXY === false ? {} : {
       '/proxyApi': {
         //端口号为8080
-        target: 'http://127.0.0.1:8080/',
+        target: 'http://127.0.0.1:2222/',
         changeOrigin: true,
         pathRewrite: {
           '^/proxyApi': '/'
