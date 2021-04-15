@@ -43,7 +43,7 @@
         prop="missingDate"
         header-align="center"
         align="center"
-        width="150"
+        width="180"
         label="失踪日期">
       </el-table-column>
       <el-table-column

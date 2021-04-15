@@ -13,6 +13,9 @@
           <el-form-item label="姓名" prop="missingPersonName">
             <el-input v-model="dataForm.missingPersonName" placeholder="姓名"></el-input>
           </el-form-item>
+          <el-form-item label="面部特征" prop="missingPersonFace">
+            <img class="people-face" :src="dataForm.missingPersonFace" :alt="dataForm.missingPersonName">
+          </el-form-item>
           <el-form-item label="性别" prop="missingPersonSex">
             <el-radio-group v-model="dataForm.missingPersonSex">
               <el-radio :label="true">男</el-radio>
@@ -31,9 +34,7 @@
           <el-form-item label="衣着" prop="missingPersonClothes">
             <el-input v-model="dataForm.missingPersonClothes" placeholder="衣着"></el-input>
           </el-form-item>
-          <el-form-item label="面部特征" prop="missingPersonFace">
-            <el-input v-model="dataForm.missingPersonFace" placeholder="面部特征"></el-input>
-          </el-form-item>
+
           <el-form-item label="既往病史" prop="missingPersonMedicalHistory">
             <el-input v-model="dataForm.missingPersonMedicalHistory" placeholder="既往病史"></el-input>
           </el-form-item>
@@ -41,13 +42,19 @@
             <el-date-picker v-model="dataForm.missingDate" type="datetime" placeholder="请选择日期时间"></el-date-picker>
           </el-form-item>
           <el-form-item label="申报地点" prop="missing_place">
-            <el-input v-model="dataForm.missingPlaceLongitude" placeholder="经度" style="width: 30%"></el-input>
-            <el-input v-model="dataForm.missingPlaceLatitude" placeholder="纬度" style="width: 30%"></el-input>
+            <div class="amap-wrapper">
+              <el-amap
+                class="amap-box"
+                :vid="'amap-vue'"
+                :center="this.position[0].point"
+                :zoom="zoom">
+                <el-amap-marker :position="position[0].point"/>
+              </el-amap>
+            </div>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
-
 
 
     <div style="text-align: center">
@@ -85,7 +92,9 @@ export default {
         missingWhereabouts: '',
         missingLevel: '',
         missingState: 0
-      }
+      },
+      position: [],
+      zoom: 13
     }
   },
   methods: {
@@ -97,6 +106,7 @@ export default {
             this.$refs.dataForm.resetFields()
           }
           if (data && data.code === 10000) {
+            let position = []
             this.visible = true
             const person = data.data.missingPeople;
             this.dataForm.missingPersonName = person.missingPersonName
@@ -108,11 +118,13 @@ export default {
             this.dataForm.missingPersonFace = person.missingPersonFace
             this.dataForm.missingPersonMedicalHistory = person.missingPersonMedicalHistory
             this.dataForm.missingDate = person.missingDate
-            this.dataForm.missingPlaceLongitude = person.missingPlaceLongitude
-            this.dataForm.missingPlaceLatitude = person.missingPlaceLatitude
             this.dataForm.missingWhereabouts = person.missingWhereabouts
             this.dataForm.missingLevel = person.missingLevel
             this.dataForm.missingState = person.missingState
+            position.push({
+              point:[person.missingPlaceLongitude,person.missingPlaceLatitude]
+            })
+            this.position = position
           } else {
             this.$message.error(data.msg)
           }
@@ -173,5 +185,12 @@ export default {
 </script>
 
 <style scoped>
-
+.people-face {
+  width: 80%;
+  height: auto;
+}
+.amap-wrapper {
+  width: 100%;
+  height: 200px;
+}
 </style>

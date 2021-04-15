@@ -6,7 +6,6 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('sys:family:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('sys:family:delete')" type="danger" @click="deleteHandle()"
                    :disabled="dataListSelections.length <= 0">批量删除
         </el-button>
@@ -51,7 +50,9 @@
         prop="missingId"
         header-align="center"
         align="center"
-        label="寻找对象">
+        label="寻找对象"
+        :formatter="formatterId"
+      >
       </el-table-column>
 
       <el-table-column
@@ -64,6 +65,7 @@
         prop="familyPlace"
         header-align="center"
         align="center"
+        width="350"
         label="家庭住址">
       </el-table-column>
       <el-table-column
@@ -137,7 +139,6 @@ export default {
     getDataList() {
       this.dataListLoading = true
       getFamilyList(this.pageIndex, this.pageSize, this.dataForm.name).then(({data}) => {
-        console.log(data)
         if (data && data.code === 10000) {
           this.dataList = data.data.list
           this.totalPage = data.data.totalCount
@@ -202,6 +203,22 @@ export default {
         })
       }).catch(() => {
       })
+    },
+    formatterId(row, column) {
+      let id = row.missingId
+      if (id === null) {
+        return "暂未申报"
+      } else {
+        var name = ''
+        // getMissingPeopleById(id).then(({data})=>{
+        //   let person = data.data.missingPeople
+        //   console.log(person)
+        //   name = person.missingPersonName
+        //   return name
+        // });
+        return id
+
+      }
     }
   }
 }

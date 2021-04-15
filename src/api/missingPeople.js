@@ -52,7 +52,7 @@ export function getMissingPeopleById(id) {
   return request({
     url: `/proxyApi/missing-people/id/${id}`,
     method: 'get',
-    params: '',
+    params: ''
   })
 }
 

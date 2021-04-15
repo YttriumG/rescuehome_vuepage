@@ -64,21 +64,25 @@ export default {
     init(id) {
       this.dataForm.volunteerId = id || 0
       getVolunteerById(this.dataForm.volunteerId).then(({data}) => {
+        console.log(data)
         this.visible = true
         this.$nextTick(() => {
           if (this.$refs.dataForm !== undefined) {
             this.$refs.dataForm.resetFields()
           }
+          if (data && data.code === 10000) {
+            var volunteer = data.data.volunteer
+            this.dataForm.volunteerId = volunteer.volunteerId,
+              this.dataForm.volunteerName = volunteer.volunteerName,
+              this.dataForm.volunteerSex = volunteer.volunteerSex,
+              this.dataForm.volunteerPhone = volunteer.volunteerPhone,
+              this.dataForm.volunteerDuration = volunteer.volunteerDuration,
+              this.dataForm.volunteerParticipate = volunteer.volunteerParticipate
+          }else{
+            this.$message.error(data.msg)
+          }
         })
-        if (data && data.code === 10000) {
-          var volunteer = data.data
-          this.dataForm.volunteerId = volunteer.volunteerId,
-          this.dataForm.volunteerName = volunteer.volunteerName,
-          this.dataForm.volunteerSex = volunteer.volunteerSex,
-          this.dataForm.volunteerPhone = volunteer.volunteerPhone,
-          this.dataForm.volunteerDuration = volunteer.volunteerDuration,
-          this.dataForm.volunteerParticipate = volunteer.volunteerParticipate
-        }
+
       })
     },
 // // 菜单树选中

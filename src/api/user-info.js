@@ -14,7 +14,10 @@ export function getUserList(pageIndex, pageSize, id) {
 
 export function getUserInfo(openId){
   return request({
-    url:`/proxyApi/wx-user/login/${openId}`,
-    method: 'get'
+    url:`/proxyApi/wx-user/second-login`,
+    method: 'get',
+    params:{
+      "openId": openId
+    }
   })
 }

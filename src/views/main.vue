@@ -6,7 +6,7 @@
     element-loading-text="拼命加载中">
     <template v-if="!loading">
       <main-navbar />
-      <main-sidebar />
+      <main-sidebar id="sidebar"/>
       <div class="site-content__wrapper" :style="{ 'min-height': documentClientHeight + 'px' }">
         <main-content />
       </div>
@@ -69,8 +69,13 @@
         }).then(({data}) => {
           if (data && data.code === 10000) {
             this.loading = false
-            this.userId = data.data.userId
-            this.userName = data.data.username
+            if (this.$root.userId === 0){
+              this.$root.userId = data.data.userId
+              this.$root.lastLoginTime = data.data.lastLoginTime
+              this.$root.userName = data.data.username
+              this.$root.email = data.data.email
+              this.$root.phone = data.data.mobile
+            }
           }
         })
       }

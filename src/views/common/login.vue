@@ -79,9 +79,13 @@ export default {
                 'captcha': this.dataForm.captcha
               })
             }).then(({data}) => {
-              console.log(data)
               if (data && data.code === 10000) {
-                setToken(data.data.token)
+                setToken(data.data.token.token)
+                this.$root.userId = data.data.user.userId
+                this.$root.lastLoginTime = data.data.user.lastLoginTime
+                this.$root.userName = data.data.user.username
+                this.$root.email = data.data.user.email
+                this.$root.phone = data.data.user.mobile
                 this.$router.replace({ name: 'home' })
               } else {
                 this.getCaptcha()

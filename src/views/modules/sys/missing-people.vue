@@ -6,7 +6,6 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('sys:ms:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('sys:ms:delete')" type="danger" @click="deleteHandle()"
                    :disabled="dataListSelections.length <= 0">批量删除
         </el-button>
@@ -57,7 +56,7 @@
         prop="missingDate"
         header-align="center"
         align="center"
-        width="150"
+        width="180"
         label="失踪日期">
       </el-table-column>
       <el-table-column
@@ -136,7 +135,6 @@ import AddOrUpdate from './missingpeople-add-or-update'
 import MoreInfo from './missingpeople-info'
 import FamilyInfo from './family-info'
 import {deleteMissingPeople, getMissingPeopleList} from "../../../api/missingPeople";
-import {getFamilyById} from "../../../api/family";
 
 export default {
   data() {
@@ -189,7 +187,6 @@ export default {
             this.dataList = []
             this.totalPage = 0
           }
-          console.log(this.dataList)
           this.dataListLoading = false
         })
     },

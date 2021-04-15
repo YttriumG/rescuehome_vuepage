@@ -199,11 +199,12 @@ img {
     }
     .el-dropdown-link {
       > img {
-        width: 36px;
-        height: auto;
+        width: 35px;
+        height: 35px;
         margin-right: 5px;
         border-radius: 100%;
         vertical-align: middle;
+        object-fit: cover;
       }
     }
   }

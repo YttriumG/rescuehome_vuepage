@@ -14,9 +14,11 @@ export function getFamilyList( pageIndex, pageSize, name ){
 
 export function getFamilyById(id){
   return request({
-    url: `/proxyApi/family/id/${id}`,
+    url: `/proxyApi/family/id`,
     method: 'get',
-    params: '',
+    params: {
+      "id" : id
+    },
   })
 }
 

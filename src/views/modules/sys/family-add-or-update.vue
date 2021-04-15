@@ -15,7 +15,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="寻找对象" prop="missingName">
-        <div>{{ dataForm.missingName }}</div>
+        <div v-if="dataForm.missingId != null">{{ dataForm.missingName }}</div>
+        <div v-else>暂无申报人员</div>
       </el-form-item>
       <el-form-item label="联系电话" prop="familyPhone">
         <el-input v-model="dataForm.familyPhone"></el-input>
@@ -62,6 +63,7 @@ export default {
       this.dataForm.id = id || 0
       getFamilyById(id).then(({data}) => {
         if (data && data.code === 10000) {
+          console.log(data)
           this.visible = true
           this.$nextTick(() => {
             this.$refs['dataForm'].resetFields()
@@ -72,23 +74,24 @@ export default {
             this.dataForm.familyPlace = family.familyPlace
             this.dataForm.familySex = family.familySex
             this.dataForm.missingId = family.missingId
-            getMissingPeopleById(family.missingId).then(({data}) => {
-              console.log(data)
-              if (data && data.code === 10000) {
-                this.$nextTick(() => {
-                  this.dataForm.missingName = data.data.missing_person_name
-                })
-              } else {
+            if (family.missingId != null) {
+              getMissingPeopleById(family.missingId).then(({data}) => {
+                if (data && data.code === 10000) {
+                  this.$nextTick(() => {
+                    this.dataForm.missingName = data.data.missing_person_name
+                  })
+                } else {
+                  that.$message.error({
+                    message: `请求走失人员错误！错误码：${data.code},${data.msg}`,
+                    type: 'warning'
+                  })
+                }
+              }, function (data) {
                 that.$message.error({
-                  message: `请求走失人员错误！错误码：${data.code},${data.msg}`,
-                  type: 'warning'
+                  message: `服务器请求错误`
                 })
-              }
-            }, function (data) {
-              that.$message.error({
-                message: `服务器请求错误`
               })
-            })
+            }
           })
         } else {
           that.$message.error({

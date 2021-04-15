@@ -8,6 +8,11 @@
       <el-form-item label="姓名" prop="missingPersonName">
         <el-input v-model="dataForm.missingPersonName" placeholder="姓名"></el-input>
       </el-form-item>
+      <el-form-item label="面部特征" prop="missingPersonFace">
+        <img v-if="dataForm.missingPersonFace !=null" :src="dataForm.missingPersonFace"
+             :alt="dataForm.missingPersonName">
+        <div v-else>暂未上传人脸照片！</div>
+      </el-form-item>
       <el-form-item label="性别" prop="missingPersonSex">
         <el-radio-group v-model="dataForm.missingPersonSex">
           <el-radio :label="true">男</el-radio>
@@ -27,9 +32,7 @@
       <el-form-item label="衣着" prop="missingPersonClothes">
         <el-input v-model="dataForm.missingPersonClothes" placeholder="衣着"></el-input>
       </el-form-item>
-      <el-form-item label="面部特征" prop="missingPersonFace">
-        <el-input v-model="dataForm.missingPersonFace" placeholder="面部特征"></el-input>
-      </el-form-item>
+
       <el-form-item label="既往病史" prop="missingPersonMedicalHistory">
         <el-input v-model="dataForm.missingPersonMedicalHistory" placeholder="既往病史"></el-input>
       </el-form-item>

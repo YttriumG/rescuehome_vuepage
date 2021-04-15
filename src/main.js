@@ -18,7 +18,7 @@ Vue.use(VueAMap)
 Vue.config.productionTip = false
 
 VueAMap.initAMapApiLoader({
-  key: '485b10bb92fe21c2750391e35774c18b',
+  key: '58c803227194cbc2194475fc3b2f89b4',
   plugin: [
     'AMap.Autocomplete', // 输入提示插件
     'AMap.PlaceSearch', // POI搜索插件
@@ -51,5 +51,16 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  data: function (){
+    return{
+      userId: 0,
+      userName: "",
+      email: "",
+      phone:"",
+      lastLoginTime:"",
+    }
+  },
+  render: h => h(App)
 })
+
